@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:view="com.jandersonfc.view.*" 
+			   xmlns:config="com.jandersonfc.config.*"
+			   creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.jandersonfc.controller.ContactController;
+			import com.jandersonfc.model.delegate.impl.ContactDelegate;
+			import com.jandersonfc.model.delegate.impl.ContactDelegateFake;
+			import com.jandersonfc.view.ContactView;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import org.springextensions.actionscript.context.config.ContextNamespaceHandler;
+			import org.springextensions.actionscript.context.support.FlexXMLApplicationContext;
+			
+			private var _appContext:FlexXMLApplicationContext;
+			
+			private var _compiledClasses:Array = [ContactController,ContactDelegateFake,ContactDelegate];
+			
+			protected function init(event:FlexEvent):void
+			{					
+				_appContext = new FlexXMLApplicationContext();
+				_appContext.addConfigLocation("com/jandersonfc/config/application-context.xml");
+				_appContext.addNamespaceHandler(new ContextNamespaceHandler());
+				_appContext.addEventListener(Event.COMPLETE, applicationContext_completeHandler);
+				_appContext.addEventListener(IOErrorEvent.IO_ERROR, applicationContext_ioErrorHandler);
+				_appContext.load();				
+			}
+			
+			private function applicationContext_completeHandler(event:Event):void {
+				addElement(new ContactView());
+			}
+			
+			private function applicationContext_ioErrorHandler(event:IOErrorEvent):void {
+				Alert.show("Erro ao tentar carregar o Contexto do Springas: '" + event.text + "'", "Erro");
+			}
+
+		]]>
+	</fx:Script>	
+	
+</s:Application>
