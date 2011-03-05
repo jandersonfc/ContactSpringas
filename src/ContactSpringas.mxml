@@ -24,6 +24,11 @@
 			
 			protected function init(event:FlexEvent):void
 			{					
+				
+				//load crossdomain.xml
+				Security.allowDomain("http://www.saberprogramar.com");
+				Security.loadPolicyFile("http://www.saberprogramar.com/crossdomain.xml");
+				
 				_appContext = new FlexXMLApplicationContext();
 				_appContext.addConfigLocation("com/jandersonfc/config/application-context.xml");
 				_appContext.addNamespaceHandler(new ContextNamespaceHandler());
